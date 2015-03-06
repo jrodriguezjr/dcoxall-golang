@@ -12,11 +12,12 @@
 # Darren Coxall <darren@darrencoxall.com>
 #
 class golang (
-  $version      = "1.1.2",
-  $workspace    = "/vagrant",
-  $arch         = "linux-amd64",
-  $download_dir = "/usr/local/src",
-  $download_url = undef,
+  $version          = "1.4.2",
+  $workspace        = "/vagrant",
+  $arch             = "linux-amd64",
+  $download_dir     = "/usr/local/src",
+  $download_url     = undef,
+  $profile_template = "golang/golang.sh.erb",
 ) {
 
   if ($download_url) {
@@ -58,7 +59,7 @@ class golang (
   }
 
   file { "/etc/profile.d/golang.sh":
-    content => template("golang/golang.sh.erb"),
+    content => template("$profile_template"),
     owner   => root,
     group   => root,
     mode    => "a+x",
