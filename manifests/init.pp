@@ -20,16 +20,19 @@ class golang (
   $profile_template = "golang/golang.sh.erb",
 ) {
 
+  # set download location
   if ($download_url) {
     $download_location = $download_url
   } else {
     $download_location = "https://storage.googleapis.com/golang/go${version}.${arch}.tar.gz"
   }
 
+  # set path info
   Exec {
     path => "/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin",
   }
 
+  # check for curl and mercurial
   if ! defined(Package['curl']) {
     package { "curl": }
   }
@@ -38,6 +41,7 @@ class golang (
     package { "mercurial": }
   }
 
+  # execute download and install
   exec { "download":
     command => "curl -o $download_dir/go-$version.tar.gz $download_location",
     creates => "$download_dir/go-$version.tar.gz",
@@ -58,7 +62,7 @@ class golang (
     before  => Exec["unarchive"],
   }
 
-  # setup workspace
+  # setup go workspace
   $go_workspace_dirs = [ "$workspace", "$workspace/bin", "$workspace/pkg", "$workspace/src" ]
 
   file { $go_workspace_dirs:
