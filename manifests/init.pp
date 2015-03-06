@@ -58,6 +58,13 @@ class golang (
     before  => Exec["unarchive"],
   }
 
+  # setup workspace
+  $go_workspace_dirs = [ "$workspace", "$workspace/bin", "$workspace/pkg", "$workspace/src" ]
+
+  file { $go_workspace_dirs:
+    ensure => directory,
+  }
+
   file { "/etc/profile.d/golang.sh":
     content => template("$profile_template"),
     owner   => root,
