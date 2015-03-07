@@ -13,6 +13,7 @@
 #
 class golang (
   $version          = "1.4.2",
+  $goroot           = "/usr/local",
   $workspace        = "/vagrant",
   $arch             = "linux-amd64",
   $download_dir     = "/usr/local/src",
@@ -49,14 +50,14 @@ class golang (
     require => Package["curl"],
   } ->
   exec { "unarchive":
-    command => "tar -C /usr/local -xzf $download_dir/go-$version.tar.gz && rm $download_dir/go-$version.tar.gz",
+    command => "tar -C $goroot -xzf $download_dir/go-$version.tar.gz && rm $download_dir/go-$version.tar.gz",
     onlyif  => "test -f $download_dir/go-$version.tar.gz",
   }
 
   exec { "remove-previous":
     command => "rm -r /usr/local/go",
     onlyif  => [
-      "test -d /usr/local/go",
+      "test -d $goroot/go",
       "which go && test `go version | cut -d' ' -f 3` != 'go$version'",
     ],
     before  => Exec["unarchive"],
