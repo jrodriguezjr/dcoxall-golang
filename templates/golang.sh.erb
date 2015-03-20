@@ -2,4 +2,8 @@ GOROOT="<%= @goroot %>/go"
 GOPATH="<%= @workspace %>"
 PATH="$GOPATH/bin:$GOROOT/bin:$PATH"
 
+if [ ! -d "$GOPATH" ]; then
+  mkdir -p $GOPATH/{bin,pkg,src}
+fi
+
 export GOPATH PATH

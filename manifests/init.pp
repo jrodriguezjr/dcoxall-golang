@@ -14,7 +14,7 @@
 class golang (
   $version          = "1.4.2",
   $goroot           = "/usr/local",
-  $workspace        = "/vagrant",
+  $workspace        = "",
   $arch             = "linux-amd64",
   $download_dir     = "/usr/local/src",
   $download_url     = undef,
@@ -61,13 +61,6 @@ class golang (
       "which go && test `go version | cut -d' ' -f 3` != 'go$version'",
     ],
     before  => Exec["unarchive"],
-  }
-
-  # setup go workspace
-  $go_workspace_dirs = [ "$workspace", "$workspace/bin", "$workspace/pkg", "$workspace/src" ]
-
-  file { $go_workspace_dirs:
-    ensure => directory,
   }
 
   file { "/etc/profile.d/golang.sh":
